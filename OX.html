@@ -1,0 +1,96 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+<meta charset="utf-8"/>  
+<title>Eryk</title>  
+<style>  
+body{  
+margin:0 0;
+background-color: #000;
+height: 100vh;
+}
+#bc {
+	position: absolute;
+	top: 200px;
+	left: 0px;
+}
+#page {
+	position: absolute;
+	top: 400px;
+	left: 400px;
+}
+</style>
+</head>  
+<body>
+<div id="page"></div>
+<script>
+var main_tab = [];
+var k = true;
+lec = 'x';
+function createMap () {
+	document.getElementById('page').innerHTML = "";
+	for(var i = 0; i< 3; i++)
+	{
+		if(k)
+			main_tab[i] = [];
+		for(var j = 0; j< 3; j++)
+		{
+			if(k)
+				main_tab[i][j] = '';
+			var dkc = document.createElement('DIV');
+    		dkc.setAttribute("id",i+"|"+j);
+    		dkc.setAttribute("onclick",'doit()');
+    		dkc.setAttribute('style','text-align: center; width: 25px; height: 25px; border: 1px white solid; float: left; display: block; background-color: #aaaaaa; position: absolute; top: '+(i*25)+'px; left: '+(j*25)+'px;');
+    		var txn = document.createTextNode(main_tab[i][j]);
+    		dkc.appendChild(txn);
+    		document.getElementById("page").appendChild(dkc);
+    	}
+   	}k = false;
+}
+function checkIt () {
+	for(var x = 0, y= 0; x<3; x++){
+		if(main_tab[x][y] == main_tab[x][y+1] && main_tab[x][y] == main_tab[x][y+2] && main_tab[x][y]!= '')
+			return true;
+	}
+	for(var x = 0, y= 0; y<3; y++){
+		if(main_tab[x][y] == main_tab[x+1][y] && main_tab[x][y] == main_tab[x+2][y] && main_tab[x][y]!= '')
+			return true;
+	}
+	if(main_tab[0][0] == main_tab[1][1] && main_tab[0][0] == main_tab[2][2] && main_tab[1][1]!= '')
+		return true;
+	if(main_tab[2][0] == main_tab[1][1] && main_tab[0][0] == main_tab[0][2] && main_tab[1][1]!= '')
+		return true;
+	return false;
+}
+function doit () {
+	var helper = event.target.id.split('|')
+	var x = helper[0];
+	var y = helper[1];
+	var hip = lec;
+	if(main_tab[x][y] == ''){
+		main_tab[x][y] = lec;
+		if(lec=='x')
+			lec='o';
+		else
+			lec='x';
+	}
+	createMap();
+	if(checkIt())
+		window.alert("WYGRYWA: "+hip), location.reload(true);
+	else{
+		rem = 0;
+		for(var i=0; i<3; i++){
+			for(var j=0; j<3; j++){
+				if(main_tab[i][j] != '')
+					rem++;
+			}
+		}
+		if(rem == 9)
+			window.alert("REMIS"), location.reload(true);
+	}
+}
+createMap();
+</script>
+</body>  
+</html>  
+  
